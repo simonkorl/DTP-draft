@@ -32,8 +32,6 @@ area: Transport Area
 workgroup: QUIC
 keyword: Deadline-aware Transport Protocol
 ipr: trust200902
-venue:
-  github: STAR-Tsinghua/DTP-draft.git
 
 author:
 -
