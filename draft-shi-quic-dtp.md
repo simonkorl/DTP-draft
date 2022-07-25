@@ -133,7 +133,7 @@ DTP provides block-based data abstraction for application. A 'block' is a piece 
 
 * Each block has a deadline requirement, meaning if the block cannot arrive before the deadline, then the whole block may become useless because it will be overwrote by newer blocks.  The application can mark the deadline timestamp indicating the deadline of its completion time. In the API of DTP, the deadline argument represents the desired block completion time in ms.
 * Each block has its own importance to the user experience. The application can assign each block a priority to indicate the importance of the block. The lower the priority value, the more important the block. The priority argument also indicates the reliability requirement of the block. The higher priority, the less likely the block will be dropped by sender.
-  
+
 The sender can actively drop any block. DTP SHOULD transmit every undropped block reliably.
 
 ## Architecture of DTP {#architecture-of-dtp}
