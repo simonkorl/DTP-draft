@@ -149,10 +149,12 @@ The priority difference among multiple blocks makes it possible to drop low prio
 
 ## Abstraction {#data-abstraction}
 
-DTP provides block-based data abstraction for application. Application MUST attach metadata along with the data block to facilitate the scheduling decision, those metadata include:
+DTP provides block-based data abstraction for application. A 'block' is a piece of continuous data. A partial delivered block is useless for applications, and each block can be independently processed. Application MUST attach metadata along with the data block to facilitate the scheduling decision, those metadata include:
 
 * Each block has a deadline requirement, meaning if the block cannot arrive before the deadline, then the whole block may become useless because it will be overwrote by newer blocks.  The application can mark the deadline timestamp indicating the deadline of its completion time. In the API of DTP, the deadline argument represents the desired block completion time in ms.
 * Each block has its own importance to the user experience. The application can assign each block a priority to indicate the importance of the block. The lower the priority value, the more important the block. The priority argument also indicates the reliability requirement of the block. The higher priority, the less likely the block will be dropped by sender.
+  
+The sender can actively drop any block. DTP SHOULD transmit every undropped block reliably.
 
 ## Architecture of DTP {#architecture-of-dtp}
 
@@ -214,6 +216,10 @@ A simple algorithm which only considers priority cannot get optimal result in tr
 
 DTP will combine all these factors to calculate real priority of each block. Then the scheduler just picks the block with the highest real priority. Scheduler of DTP will calculate the block remaining transmission time and then compare it to the deadline. The closer to the deadline, the higher real priority. And higher application specified priority will also result in higher real priority. In this way, the scheduler can take both approaching deadline and application-specified priority into account. Blocks which are severely overdue can be dropped accordingly.
 
+### Block dropping mechanism
+
+DTP allows the sender side to cancel sending several blocks in the transport layer, and this action is called 'drop'. By dropping some stale blocks, DTP can enhance the timeliness of other sending blocks and save bandwidth. DTP SHOULD implement some strategies on the sender side to determine which 'block' should be dropped. On the receiver side, DTP SHOULD be able to check which block is dropped and MAY have functions to inform the application about the canceled blocks.
+
 ## Deadline-aware Redundancy {#deadline-aware-redundancy}
 
 After the scheduler pick the block to send, the packetizer will break the block into packet streams. Those packet streams will go through the redundancy module. When the link is lossy and deadline is tight, retransmission will cause the block missing the deadline. Redundancy module has the ability of sending redundancy (like FEC Repair Symbols) along with the data that will help to recover the data packets (like FEC Source Symbols), this can avoid retransmission.
@@ -264,13 +270,15 @@ This document reuses the congestion control module defined in QUIC {{QUIC}}. Con
 
 # Extension of QUIC {#extension-to-quic}
 
-DTP is implemented as an extension of QUIC by mapping QUIC stream to DTP block one to one. In that way, DTP can reuse the QUIC stream cancellation mechanism to drop the stale block during transmission. And DTP can also utilize the max stream data size defined by QUIC to negotiate its max block size. Besides, the block id of DTP can also be mapped to QUIC stream id without breaking the QUIC stream id semantic.
+DTP is implemented as an extension of QUIC by **mapping QUIC stream to DTP block one to one**. In that way, DTP can reuse the QUIC stream cancellation mechanism to drop the stale block during transmission. And DTP can also utilize the max stream data size defined by QUIC to negotiate its max block size. Besides, the block id of DTP can also be mapped to QUIC stream id without breaking the QUIC stream id semantic.
+
+DTP implements its block dropping mechanism by leveraging QUIC's stream cancellation function. DTP only defines the drop action on the **sender side** to cancel stale blocks. DTP leaves the decisions to the application layer on the receiver side to determine whether to accept an overdue block. However, because QUIC allows to cancel streams on both sides and DTP is an extension of QUIC, DTP MAY cancel the block from the receiver side. It requires mechanisms to measure each receiving block's importance and drop it.
 
 DTP endpoints communicate by exchanging packets. And the payload of DTP packets, consists of a sequence of complete frames. As defined in [QUIC], each frame begins with a Frame Type, indicating its type, followed by additional type-dependent fields. Besides the many frame types defined in Section 12.4 of [QUIC], DTP introduces BLOCK_INFO Frame to support timeliness data transmission. And DTP also makes adjustment on QUIC ACK Frame. Another extension is introducing FEC packet to support FEC.
 
 ## New Frame: BLOCK_INFO Frame {#blockinfo-frame}
 
-DTP adds a BLOCK\_INFO frame (type=0x20) in the front of each block to inform scheduler of Block Size, Block Priority and Block Deadline. These parameters can be used to do block scheduling. The BLOCK\_INFO frame is as follows:
+DTP adds two kinds of BLOCK\_INFO frames (type=0x20, 0x21). Either of these frames SHOULD be attached in the front of each block to inform the scheduler of Block Size, Block Priority, and Block Deadline. These parameters can be used to do block scheduling. The BLOCK\_INFO frame is as follows:
 
 ~~~
     0                   1                   2                   3
@@ -284,6 +292,8 @@ DTP adds a BLOCK\_INFO frame (type=0x20) in the front of each block to inform sc
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                      Block Deadline (i)                     ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    [Start time stamp (i)]                   ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #block title="BLOCK_INFO Frame Format"}
 
@@ -291,7 +301,8 @@ DTP adds a BLOCK\_INFO frame (type=0x20) in the front of each block to inform sc
 * Stream ID: A variable-length integer indicating the stream ID of the stream.
 * Block Size: A variable-length integer indicating the size of the block.
 * Block Priority: A variable-length integer indicating the priority of the block.
-* Block Deadline: A variable-length integer indicating the required transimission deadline.
+* Block Deadline: A variable-length integer indicating the required transimission deadline. Dealine should be a duration in microseconds.
+* Start time stamp: An optional parameter to inform the receiver about the starting time of this block. This parameter may be helpful when the receiver wants to use the deadline information. The time stamp parameter SHOULD be the same format as [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time). The sender and receiver SHOULD do clock synchronization if they use this parameter.
 
 ## Adjusted QUIC Frame: Timestamped ACK Frame {#timestamped-ack-frame}
 
@@ -318,7 +329,9 @@ DTP add a new Time Stamp Parameter to QUIC ACK Frame. Timestamped ACK frames are
 ~~~
 {: #time title="Timestamped ACK Frame Format"}
 
-Using this time stamp parameter we can calculate whether the prior blocks transmitted missing deadline or not, and we can also calculate the block completion rate before deadline.
+Using this time stamp parameter we can calculate whether the prior blocks transmitted missing deadline or not, and we can also calculate the block completion rate before deadline. The time stamp parameter SHOULD be the same format as [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time).
+
+The Timestamped ACK is adequate to inform the sender about the timeliness information from the receiver side. To fully use the deadline information in the block, the sender and the receiver should do clock synchronization.
 
 ## Redundancy Packet {#redundancy-packet}
 
@@ -442,6 +455,10 @@ Mandatory attributes:
 * connection id - local connection name of an indicated connection.
 
 All these functions mentioned above are running in asynchronous mode. An application can use various event driven framework to call those functions.
+
+## Collaborate with upper layer protocols
+
+Some protocols on top QUIC prefer not leaving scheduling and block canceling to the transport layer. As an extension of QUIC, DTP MAY expose information inside the transport layer like the status of congestion control and loss recovery to the upper layers to help them do their jobs.
 
 # Security Considerations
 
