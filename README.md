@@ -1,16 +1,30 @@
-# ietf draft for DTP
+# Deadline-aware Transport Protocol
 
-[Read the
-instructions](https://github.com/martinthomson/i-d-template/blob/main/doc/TEMPLATE.md)
-for more information.
+This is the working area for the individual Internet-Draft, "Deadline-aware Transport Protocol".
 
-## Preview the result
+* [Editor's Copy](https://simonkorl.github.io/DTP-draft/#go.draft-shi-quic-dtp.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-shi-quic-dtp)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-shi-quic-dtp)
+* [Compare Editor's Copy to Individual Draft](https://simonkorl.github.io/DTP-draft/#go.draft-shi-quic-dtp.diff)
 
-1. Install [Ruby](https://www.ruby-lang.org/en/) and [gem](https://rubygems.org/pages/download)
-2. Install [kramdown-rfc](https://github.com/cabo/kramdown-rfc)
-3. Run `rdrfc -r ./draft-shi-quic-dtp.md`
 
-## Writing instructions
+## Contributing
 
-You can refer to examples in [kramdown-rfc](https://github.com/cabo/kramdown-rfc) to get insights of how to write the draft in markdown format. https://authors.ietf.org/ can also help.
+See the
+[guidelines for contributions](https://github.com/simonkorl/DTP-draft/blob/main/CONTRIBUTING.md).
+
+Contributions can be made by creating pull requests.
+The GitHub interface supports creating pull requests using the Edit (✏) button.
+
+
+## Command Line Usage
+
+Formatted text and HTML versions of the draft can be built using `make`.
+
+```sh
+$ make
+```
+
+Command line usage requires that you have the necessary software installed.  See
+[the instructions](https://github.com/martinthomson/i-d-template/blob/main/doc/SETUP.md).
 
