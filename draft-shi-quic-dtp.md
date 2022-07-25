@@ -8,13 +8,13 @@ submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 date: {DATE}
 consensus: true
 v: 3
-area: Transport Area
-workgroup: QUIC
+area: "Transport"
+workgroup: "QUIC"
 keyword: Deadline-aware Transport Protocol
 ipr: trust200902
 
 venue:
-    github: https://github.com/STAR-Tsinghua/DTP-draft.git
+  github: "simonkorl/DTP-draft"
 
 author:
 -
