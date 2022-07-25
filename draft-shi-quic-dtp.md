@@ -23,7 +23,7 @@ title: Deadline-aware Transport Protocol
 abbrev: DTP
 category: info
 
-docname: draft-shi-quic-dtp-05
+docname: draft-shi-quic-dtp-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 date: {DATE}
 consensus: true
@@ -32,6 +32,9 @@ area: Transport Area
 workgroup: QUIC
 keyword: Deadline-aware Transport Protocol
 ipr: trust200902
+
+venue:
+    github: https://github.com/STAR-Tsinghua/DTP-draft.git
 
 author:
 -
@@ -69,7 +72,7 @@ author:
   city: Beijing
   country: China
   email: shi-h15@mails.tsinghua.edu.cn
-  
+
 -
   ins: K. Zheng
   fullname: Kai Zheng
@@ -85,23 +88,23 @@ author:
 normative:
 
   QUIC: RFC9000
-  
+
   QUIC-TLS: RFC9001
-  
+
   arXiv:1809.04822:
     title: Adding Forward Erasure Correction to QUIC
     author:
-        - 
+        -
           ins: F Michel
           name: François Michel
-        - 
+        -
           ins: Q Coninck
           name: Quentin De Coninck
-        - 
+        -
           ins: O Bonaventure
           name: Olivier Bonaventure
     date: September 13 2018
-    format: 
+    format:
       PDF: https://arxiv.xilesou.top/pdf/1809.04822.pdf
 
 informative:
@@ -156,18 +159,18 @@ DTP provides block-based data abstraction for application. Application MUST atta
 The sender side architecture is shown in {{arch-of-dtp}}:
 
 ~~~~~~
-                            +-------------+                                 
-                            |             |                                 
-                            | Application |                                 
-                            |             |                                 
-                            +-------------+                                
-                                   |                                     
-                                   |                                       
-                                   V                                      
- +------------------------------------------------------------------------+            
- |         Block 0                Block 1                   Block n       |             
- | +--------+----------+  +--------+----------+     +--------+----------+ |             
- | |Metadata|Data Block|  |Metadata|Data Block| ... |Metadata|Data Block| |     
+                            +-------------+
+                            |             |
+                            | Application |
+                            |             |
+                            +-------------+
+                                   |
+                                   |
+                                   V
+ +------------------------------------------------------------------------+
+ |         Block 0                Block 1                   Block n       |
+ | +--------+----------+  +--------+----------+     +--------+----------+ |
+ | |Metadata|Data Block|  |Metadata|Data Block| ... |Metadata|Data Block| |
  | +--------+----------+  +--------+----------+     +--------+----------+ |
  |                                                                        |
  | (Metadata includes Deadline and Priority)                              |
@@ -183,18 +186,18 @@ The sender side architecture is shown in {{arch-of-dtp}}:
                                    |
                                    |
                                    v
-                            +-------------+ 
+                            +-------------+
                             |             |
-                            | Redundancy  |     
+                            | Redundancy  |
                             |             |
                             +-------------+
                                    |
                                    |
-                                   v                                   
-                            +-------------+                               
-                            |             |                               
-                            | Congestion  |         
-                            | Control     |                   
+                                   v
+                            +-------------+
+                            |             |
+                            | Congestion  |
+                            | Control     |
                             +-------------+
                                    |
                                    v
@@ -218,20 +221,20 @@ After the scheduler pick the block to send, the packetizer will break the block 
 We use unencrypted DTP packets as input to Redundancy Module because the loss of a DTP packet exactly corresponds to the loss of one Redundancy Packet. And to perform the coding and decoding with packets of different sizes, some packets may need to be padded with PADDING Frame. The present design of Redundancy Module follows the FEC Framework specified in [arXiv:1809.04822]. {{redundancy}} illustrates this framework:
 
 ~~~~~~
-           | 
-           | 
-           v 
-    +-------------+              
+           |
+           |
+           v
+    +-------------+
     |             |
     |     DTP     |
-    |  Scheduler  |              
-    |             |              
-    +------+------+              
-           |                                                         
-        (1)|DTP Packets            
+    |  Scheduler  |
+    |             |
+    +------+------+
+           |
+        (1)|DTP Packets
 +----------|-------------------------------------------+
 |          v                                           |
-|  +-------+------+                    +------------+  | 
+|  +-------+------+                    +------------+  |
 |  |              | (2)DTP Payload     |            |  | DTP
 |  |  Redundancy  |------------------> | Redundancy |  | Redundancy
 |  |  Packtizing &|<------------------ | Scheme     |  | Module
@@ -366,7 +369,7 @@ Format: SEND(connection id, buffer address, byte count, block id, block deadline
 The return value of SEND is the continuous bytes count which is successfully written. If the transport layer buffer is limited or the flow control limit of the block is reached, application needs to call SEND again.
 
 Mandatory attributes:
-    
+
 * connection id - local connection name of an indicated connection.
 * buffer address - the location where the block to be transmitted is stored.
 * byte count - the size of the block data in number of bytes.
@@ -377,9 +380,9 @@ Mandatory attributes:
 #### Update
 
 Format: UPDATE(connection id, block id, block deadline, block priority) -> result
-   
+
 The UPDATE function is used to update the metadata of the block. The return value of UPDATE function indicates the success of the action. It will return success code if succeeds, and error code if fails.
-   
+
 Mandatory attributes:
 
 * connection id - local connection name of an indicated connection.
@@ -415,19 +418,19 @@ Mandatory attributes:
 Optional attributes:
 
 * block id - to indicate which block to receive the data on.
-   
+
 ### Feedback Functions {#feedback-functions}
 
 #### on_dropped
 
 Format: ON\_DROPPED(connection id) -> block id, deadline, priority, goodbytes
-    
+
 The ON\_DROPPED function is called when a block is dropped. The metadata of the dropped block such as block id, deadline, priority is attached. The number of bytes delivered before its deadline(goodbytes) is returned.
-    
+
 Mandatory attributes:
 
 * connection id - local connection name of an indicated connection.
-    
+
 #### on_delivered
 
 Format: ON\_DELIVERED(connection id) -> block id, deadline, priority, delta, goodbytes
