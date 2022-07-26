@@ -27,31 +27,19 @@ author:
   email: cuiyong@tsinghua.edu.cn
 
 -
-  ins: Z. Liu
-  fullname: ZhiwenLiu
+  ins: C. Ma
+  fullname: Chuan Ma
   org: Tsinghua University
   street: 30 Shuangqing Rd
   city: Beijing
   country: China
-  email: liu-zw20@mails.tsinghua.edu.cn
-
--
-  ins: J. Zhang
-  fullname: Jie Zhang
-  org: Tsinghua University
-  street: 30 Shuangqing Rd
-  city: Beijing
-  country: China
-  email: zhangjie19@mails.tsinghua.edu.cn
+  email: mc21@mails.tsinghua.edu.cn
 
 -
   ins: H. Shi
   fullname: Hang Shi
-  org: Tsinghua University
-  street: 30 Shuangqing Rd
-  city: Beijing
-  country: China
-  email: shi-h15@mails.tsinghua.edu.cn
+  org: Huawei
+  email: shihang9@huawei.com
 
 -
   ins: K. Zheng
@@ -452,7 +440,7 @@ This document has no IANA actions.
 
 --- back
 
-<!-- # Acknowledgments -->
-<!-- {:numbered="false"} -->
+# Acknowledgments
+{:numbered="false"}
 
-<!-- TODO acknowledge. -->
+We sincerely thank [Z. Liu](liu-zw20@mails.tsinghua.edu.cn) and [J. Zhang](zhangjie19@mails.tsinghua.edu.cn) for contributing to the DTP project. They provided a lot of advice and revisions to the draft and actively helped advance the relevant progress of DTP standardization.
