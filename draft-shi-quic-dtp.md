@@ -438,7 +438,7 @@ All these functions mentioned above are running in asynchronous mode. An applica
 
 ## Collaborate with upper layer protocols
 
-Some protocols on top QUIC prefer not leaving scheduling and block canceling to the transport layer. As an extension of QUIC, DTP MAY expose information inside the transport layer like the status of congestion control and loss recovery to the upper layers to help them do their jobs.
+Application protocol on top of DTP may benefit from the block info and detail metric of the transport layer. DTP MAY expose the block information to the receiver side application and the status of the congestion control and buffer status to both sender side and receiver side application. This information will enable multiple DTP relay node working together to improve the deadline-delivery performance end-to-end.
 
 # Security Considerations
 
