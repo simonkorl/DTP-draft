@@ -6,8 +6,7 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>Deadline-aware Transport Protocol</title>
 <meta content="Yong Cui" name="author">
-<meta content="ZhiwenLiu" name="author">
-<meta content="Jie Zhang" name="author">
+<meta content="Chuan Ma" name="author">
 <meta content="Hang Shi" name="author">
 <meta content="Kai Zheng" name="author">
 <meta content="Wei Wang" name="author">
@@ -1040,7 +1039,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Cui, et al.</td>
-<td class="center">Expires 26 January 2023</td>
+<td class="center">Expires 27 January 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1052,12 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-shi-quic-dtp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-07-25" class="published">25 July 2022</time>
+<time datetime="2022-07-26" class="published">26 July 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-01-26">26 January 2023</time></dd>
+<dd class="expires"><time datetime="2023-01-27">27 January 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1066,16 +1065,12 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <div class="org">Tsinghua University</div>
 </div>
 <div class="author">
-      <div class="author-name">Z. Liu</div>
-<div class="org">Tsinghua University</div>
-</div>
-<div class="author">
-      <div class="author-name">J. Zhang</div>
+      <div class="author-name">C. Ma</div>
 <div class="org">Tsinghua University</div>
 </div>
 <div class="author">
       <div class="author-name">H. Shi</div>
-<div class="org">Tsinghua University</div>
+<div class="org">Huawei</div>
 </div>
 <div class="author">
       <div class="author-name">K. Zheng</div>
@@ -1122,7 +1117,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 26 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1233,7 +1228,10 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1729,7 +1727,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
         <h3 id="name-collaborate-with-upper-laye">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-collaborate-with-upper-laye" class="section-name selfRef">Collaborate with upper layer protocols</a>
         </h3>
-<p id="section-5.3-1">Some protocols on top QUIC prefer not leaving scheduling and block canceling to the transport layer. As an extension of QUIC, DTP <span class="bcp14">MAY</span> expose information inside the transport layer like the status of congestion control and loss recovery to the upper layers to help them do their jobs.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">Application protocol on top of DTP may benefit from the block info and detail metric of the transport layer. DTP <span class="bcp14">MAY</span> expose the block information to the receiver side application and the status of the congestion control and buffer status to both sender side and receiver side application. This information will enable multiple DTP relay node working together to improve the deadline-delivery performance end-to-end.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1785,8 +1783,16 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <dd class="break"></dd>
 </dl>
 </section>
-<div id="authors-addresses">
+<div id="acknowledgments">
 <section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">We sincerely thank <a href="liu-zw20@mails.tsinghua.edu.cn">Z. Liu</a> and <a href="zhangjie19@mails.tsinghua.edu.cn">J. Zhang</a> for contributing to the DTP project. They provided a lot of advice and revisions to the draft and actively helped advance the relevant progress of DTP standardization.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
@@ -1802,36 +1808,22 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 </div>
 </address>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">ZhiwenLiu</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Chuan Ma</span></div>
 <div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
 <div dir="auto" class="left"><span class="street-address">30 Shuangqing Rd</span></div>
 <div dir="auto" class="left"><span class="locality">Beijing</span></div>
 <div dir="auto" class="left"><span class="country-name">China</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:liu-zw20@mails.tsinghua.edu.cn" class="email">liu-zw20@mails.tsinghua.edu.cn</a>
-</div>
-</address>
-<address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Jie Zhang</span></div>
-<div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
-<div dir="auto" class="left"><span class="street-address">30 Shuangqing Rd</span></div>
-<div dir="auto" class="left"><span class="locality">Beijing</span></div>
-<div dir="auto" class="left"><span class="country-name">China</span></div>
-<div class="email">
-<span>Email:</span>
-<a href="mailto:zhangjie19@mails.tsinghua.edu.cn" class="email">zhangjie19@mails.tsinghua.edu.cn</a>
+<a href="mailto:mc21@mails.tsinghua.edu.cn" class="email">mc21@mails.tsinghua.edu.cn</a>
 </div>
 </address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Hang Shi</span></div>
-<div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
-<div dir="auto" class="left"><span class="street-address">30 Shuangqing Rd</span></div>
-<div dir="auto" class="left"><span class="locality">Beijing</span></div>
-<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div dir="auto" class="left"><span class="org">Huawei</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:shi-h15@mails.tsinghua.edu.cn" class="email">shi-h15@mails.tsinghua.edu.cn</a>
+<a href="mailto:shihang9@huawei.com" class="email">shihang9@huawei.com</a>
 </div>
 </address>
 <address class="vcard">

@@ -3,14 +3,13 @@
 
 
 QUIC                                                              Y. Cui
-Internet-Draft                                                    Z. Liu
-Intended status: Informational                                  J. Zhang
-Expires: 26 January 2023                                          H. Shi
-                                                     Tsinghua University
+Internet-Draft                                                     C. Ma
+Intended status: Informational                       Tsinghua University
+Expires: 27 January 2023                                          H. Shi
                                                                 K. Zheng
                                                                  W. Wang
                                                                   Huawei
-                                                            25 July 2022
+                                                            26 July 2022
 
 
                    Deadline-aware Transport Protocol
@@ -49,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 January 2023.
+   This Internet-Draft will expire on 27 January 2023.
 
 Copyright Notice
 
@@ -90,6 +89,7 @@ Table of Contents
    6.  Security Considerations
    7.  IANA Considerations
    8.  Normative References
+   Acknowledgments
    Authors' Addresses
 
 1.  Introduction
@@ -711,11 +711,13 @@ Table of Contents
 
 5.3.  Collaborate with upper layer protocols
 
-   Some protocols on top QUIC prefer not leaving scheduling and block
-   canceling to the transport layer.  As an extension of QUIC, DTP MAY
-   expose information inside the transport layer like the status of
-   congestion control and loss recovery to the upper layers to help them
-   do their jobs.
+   Application protocol on top of DTP may benefit from the block info
+   and detail metric of the transport layer.  DTP MAY expose the block
+   information to the receiver side application and the status of the
+   congestion control and buffer status to both sender side and receiver
+   side application.  This information will enable multiple DTP relay
+   node working together to improve the deadline-delivery performance
+   end-to-end.
 
 6.  Security Considerations
 
@@ -760,6 +762,14 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
+Acknowledgments
+
+   We sincerely thank Z.  Liu (liu-zw20@mails.tsinghua.edu.cn) and J.
+   Zhang (zhangjie19@mails.tsinghua.edu.cn) for contributing to the DTP
+   project.  They provided a lot of advice and revisions to the draft
+   and actively helped advance the relevant progress of DTP
+   standardization.
+
 Authors' Addresses
 
    Yong Cui
@@ -770,28 +780,17 @@ Authors' Addresses
    Email: cuiyong@tsinghua.edu.cn
 
 
-   ZhiwenLiu
+   Chuan Ma
    Tsinghua University
    30 Shuangqing Rd
    Beijing
    China
-   Email: liu-zw20@mails.tsinghua.edu.cn
-
-
-   Jie Zhang
-   Tsinghua University
-   30 Shuangqing Rd
-   Beijing
-   China
-   Email: zhangjie19@mails.tsinghua.edu.cn
+   Email: mc21@mails.tsinghua.edu.cn
 
 
    Hang Shi
-   Tsinghua University
-   30 Shuangqing Rd
-   Beijing
-   China
-   Email: shi-h15@mails.tsinghua.edu.cn
+   Huawei
+   Email: shihang9@huawei.com
 
 
    Kai Zheng
